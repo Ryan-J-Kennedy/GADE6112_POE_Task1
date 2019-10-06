@@ -88,7 +88,7 @@ namespace GADE6112_POE
             //Moves towards closest enemey
             if (Health > MaxHealth * 0.25)
             {
-                if (closestUnit.posX > posX && PosX < 20)
+                if (closestUnit.posX > posX && PosX < 19)
                 {
                     posX++;
                 }
@@ -97,7 +97,7 @@ namespace GADE6112_POE
                     posX--;
                 }
 
-                if (closestUnit.posY > posY && PosY < 20)
+                if (closestUnit.posY > posY && PosY < 19)
                 {
                     posY++;
                 }
@@ -110,7 +110,7 @@ namespace GADE6112_POE
             {
                 int direction = r.Next(0, 4);
 
-                if(direction == 0 && PosX < 20)
+                if(direction == 0 && PosX < 19)
                 {
                     posX++;
                 }
@@ -118,7 +118,7 @@ namespace GADE6112_POE
                 {
                     posX--;
                 }
-                else if(direction == 2 && posY < 20)
+                else if(direction == 2 && posY < 19)
                 {
                     posY++;
                 }
