@@ -31,6 +31,7 @@ namespace GADE6112_POE
         public int Health
         {
             get { return base.health; }
+            set { health = value; }
         }
 
         public int MaxHealth
@@ -88,22 +89,47 @@ namespace GADE6112_POE
             //Moves towards closest enemey
             if (Health > MaxHealth * 0.25)
             {
-                if (closestUnit.posX > posX && PosX < 19)
+                if (closestUnit is MeleeUnit)
                 {
-                    posX++;
-                }
-                else if (closestUnit.posX < posX && posX > 0)
-                {
-                    posX--;
-                }
+                    MeleeUnit M = (MeleeUnit)closestUnit;
+                    if (M.PosX > posX && PosX < 19)
+                    {
+                        posX++;
+                    }
+                    else if (M.PosX < posX && posX > 0)
+                    {
+                        posX--;
+                    }
 
-                if (closestUnit.posY > posY && PosY < 19)
-                {
-                    posY++;
+                    if (M.PosY > posY && PosY < 19)
+                    {
+                        posY++;
+                    }
+                    else if (M.PosY < posY && posY > 0)
+                    {
+                        posY--;
+                    }
                 }
-                else if (closestUnit.posY < posY && posY > 0)
+                else if (closestUnit is RangedUnit)
                 {
-                    posY--;
+                    RangedUnit R = (RangedUnit)closestUnit;
+                    if (R.PosX > posX && PosX < 19)
+                    {
+                        posX++;
+                    }
+                    else if (R.PosX < posX && posX > 0)
+                    {
+                        posX--;
+                    }
+
+                    if (R.PosY > posY && PosY < 19)
+                    {
+                        posY++;
+                    }
+                    else if (R.PosY < posY && posY > 0)
+                    {
+                        posY--;
+                    }
                 }
             }
             else //Moves in random direction to run away
@@ -133,34 +159,43 @@ namespace GADE6112_POE
         //Deals damage to closest unit if they are in attack range
         public override void Combat()
         {
-            foreach (Unit u in units)
+            if (closestUnit is MeleeUnit)
             {
-                if (closestUnit.posX == u.posX && closestUnit.posY == u.posY)
-                {
-                    u.health = u.health - Attack;
-                    IsAttacking = true;
-                    break;
-                }
-                else
-                {
-                    IsAttacking = false;
-                }
+                MeleeUnit M = (MeleeUnit)closestUnit;
+                M.Health -= Attack;
+            }
+            else if (closestUnit is RangedUnit)
+            {
+                RangedUnit R = (RangedUnit)closestUnit;
+                R.Health -= Attack;
             }
         }
 
-        //Checks to see if they are below 25% health so they move rather than attacking
+        //Checks to see if the closest enemy is in attack range and if they are calls combat or move if they aren't
         public override void CheckAttackRange(List<Unit> uni, Unit[,] unitMap)
         {
             units = uni;
 
             closestUnit = ClosestEnemy();
             int xDis, yDis;
-            int distance;
+            int distance = 1000;
 
-            xDis = Math.Abs((PosX - closestUnit.posX) * (PosX - closestUnit.posX));
-            yDis = Math.Abs((PosY - closestUnit.posY) * (PosY - closestUnit.posY));
+            if (closestUnit is MeleeUnit)
+            {
+                MeleeUnit M = (MeleeUnit)closestUnit;
+                xDis = Math.Abs((PosX - M.PosX) * (PosX - M.PosX));
+                yDis = Math.Abs((PosY - M.PosY) * (PosY - M.PosY));
 
-            distance = (int)Math.Round(Math.Sqrt(xDis + yDis), 0);
+                distance = (int)Math.Round(Math.Sqrt(xDis + yDis), 0);
+            }
+            else if (closestUnit is RangedUnit)
+            {
+                RangedUnit R = (RangedUnit)closestUnit;
+                xDis = Math.Abs((PosX - R.PosX) * (PosX - R.PosX));
+                yDis = Math.Abs((PosY - R.PosY) * (PosY - R.PosY));
+
+                distance = (int)Math.Round(Math.Sqrt(xDis + yDis), 0);
+            }
 
             //Checks to see if they are below 25% health so they move rather than attacking
             if (Health > MaxHealth * 0.25)
@@ -178,31 +213,49 @@ namespace GADE6112_POE
             {
                 Move();
             }
+
         }
 
         //finds and returns the closest enemy
         public override Unit ClosestEnemy()
         {
             int xDis, yDis;
-            double distance;
+            double distance = 1000;
             double temp = 1000;
             Unit target = null;
 
 
             foreach (Unit u in units)
             {
-                if (FactionType != u.factionType)
+                if (u is RangedUnit)
                 {
-                    xDis = Math.Abs((PosX - u.posX) * (PosX - u.posX));
-                    yDis = Math.Abs((PosY - u.posY) * (PosY - u.posY));
+                    RangedUnit b = (RangedUnit)u;
 
-                    distance = Math.Round(Math.Sqrt(xDis + yDis), 0);
-
-                    if (distance < temp)
+                    if (FactionType != b.FactionType)
                     {
-                        temp = distance;
-                        target = u;
+                        xDis = Math.Abs((PosX - b.PosX) * (PosX - b.PosX));
+                        yDis = Math.Abs((PosY - b.PosY) * (PosY - b.PosY));
+
+                        distance = Math.Round(Math.Sqrt(xDis + yDis), 0);
                     }
+                }
+                else if (u is MeleeUnit)
+                {
+                    MeleeUnit b = (MeleeUnit)u;
+
+                    if (FactionType != b.FactionType)
+                    {
+                        xDis = Math.Abs((PosX - b.PosX) * (PosX - b.PosX));
+                        yDis = Math.Abs((PosY - b.PosY) * (PosY - b.PosY));
+
+                        distance = Math.Round(Math.Sqrt(xDis + yDis), 0);
+                    }
+                }
+
+                if (distance < temp)
+                {
+                    temp = distance;
+                    target = u;
                 }
             }
 

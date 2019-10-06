@@ -21,14 +21,14 @@ namespace GADE6112_POE
 
     abstract class Unit
     {
-        public int posX, posY;
-        public int health;
-        public int maxHealth;
-        public int speed;
-        public int attack, attackRange;
-        public string symbol;
-        public Faction factionType;
-        public bool isAttacking;
+        protected int posX, posY;
+        protected int health;
+        protected int maxHealth;
+        protected int speed;
+        protected int attack, attackRange;
+        protected string symbol;
+        protected Faction factionType;
+        protected bool isAttacking;
 
         public Unit(int x, int y, int hp, int sp, int att, int attRange, string sym, Faction faction, bool isAtt)
         {

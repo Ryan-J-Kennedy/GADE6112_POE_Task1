@@ -58,13 +58,18 @@ namespace GADE6112_POE
                         btn.Name = m.unitMap[x, y].ToString();
                         btn.Click += MyButtonClick;
 
-                        if (m.unitMap[x, y].factionType == Faction.Dire)
+                        if (m.unitMap[x, y] is RangedUnit)
                         {
-                            btn.BackColor = Color.Red;
-                        }
-                        else
-                        {
-                            btn.BackColor = Color.Green;
+                            RangedUnit M = (RangedUnit)m.unitMap[x, y];
+
+                            if (M.FactionType == Faction.Dire)
+                            {
+                                btn.BackColor = Color.Red;
+                            }
+                            else
+                            {
+                                btn.BackColor = Color.Green;
+                            }
                         }
                     }
                     else if (m.map[x, y] == "M")
@@ -73,13 +78,18 @@ namespace GADE6112_POE
                         btn.Name = m.unitMap[x, y].ToString();
                         btn.Click += MyButtonClick;
 
-                        if (m.unitMap[x, y].factionType == Faction.Dire)
+                        if (m.unitMap[x, y] is MeleeUnit)
                         {
-                            btn.BackColor = Color.Red;
-                        }
-                        else
-                        {
-                            btn.BackColor = Color.Green;
+                            MeleeUnit M = (MeleeUnit)m.unitMap[x, y];
+
+                            if (M.FactionType == Faction.Dire)
+                            {
+                                btn.BackColor = Color.Red;
+                            }
+                            else
+                            {
+                                btn.BackColor = Color.Green;
+                            }
                         }
                     }
                     else
@@ -129,13 +139,31 @@ namespace GADE6112_POE
 
             foreach (Unit u in m.units)
             {
-                if(u.factionType == Faction.Dire)
+                if (u is MeleeUnit)
                 {
-                    dire++;
+                    MeleeUnit M = (MeleeUnit)u;
+
+                    if (M.FactionType == Faction.Dire)
+                    {
+                        dire++;
+                    }
+                    else
+                    {
+                        radiant++;
+                    }
                 }
-                else
+                else if (u is RangedUnit)
                 {
-                    radiant++;
+                    RangedUnit M = (RangedUnit)u;
+
+                    if (M.FactionType == Faction.Dire)
+                    {
+                        dire++;
+                    }
+                    else
+                    {
+                        radiant++;
+                    }
                 }
             }
 
@@ -174,7 +202,7 @@ namespace GADE6112_POE
             {
                 if (m.rangedUnits[i].Death())
                 {
-                    m.map[m.rangedUnits[i].posX, m.rangedUnits[i].posY] = "";
+                    m.map[m.rangedUnits[i].PosX, m.rangedUnits[i].PosY] = "";
                     m.rangedUnits.RemoveAt(i);
                     
                 }
@@ -184,7 +212,7 @@ namespace GADE6112_POE
             {
                 if (m.meleeUnits[i].Death())
                 {
-                    m.map[m.meleeUnits[i].posX, m.meleeUnits[i].posY] = "";
+                    m.map[m.meleeUnits[i].PosX, m.meleeUnits[i].PosY] = "";
                     m.meleeUnits.RemoveAt(i);
 
                 }
@@ -194,9 +222,18 @@ namespace GADE6112_POE
             {
                 if (m.units[i].Death())
                 {
-                    m.map[m.units[i].posX, m.units[i].posY] = "";
-                    m.units.RemoveAt(i);
-
+                    if (m.units[i] is MeleeUnit)
+                    {
+                        MeleeUnit M = (MeleeUnit)m.units[i];
+                        m.map[M.PosX, M.PosY] = "";
+                        m.units.RemoveAt(i);
+                    }
+                    else if (m.units[i] is RangedUnit)
+                    {
+                        RangedUnit R = (RangedUnit)m.units[i];
+                        m.map[R.PosX, R.PosY] = "";
+                        m.units.RemoveAt(i);
+                    }
                 }
             }
 

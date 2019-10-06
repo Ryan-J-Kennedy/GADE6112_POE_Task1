@@ -23,8 +23,8 @@ namespace GADE6112_POE
         Random rd = new Random();
 
         public List<Unit> units = new List<Unit>();
-        public List<Unit> rangedUnits = new List<Unit>();
-        public List<Unit> meleeUnits = new List<Unit>();
+        public List<RangedUnit> rangedUnits = new List<RangedUnit>();
+        public List<MeleeUnit> meleeUnits = new List<MeleeUnit>();
 
         public Unit[,] unitMap = new Unit[20, 20];
 
@@ -62,45 +62,45 @@ namespace GADE6112_POE
 
 
             //Randomises unit object's x and u position
-            foreach (Unit u in rangedUnits)
+            foreach (RangedUnit u in rangedUnits)
             {
                 for (int i = 0; i < rangedUnits.Count; i++)
                 {
                     int xPos = rd.Next(0, 20);
                     int yPos = rd.Next(0, 20);
 
-                    while (xPos == rangedUnits[i].posX && yPos == rangedUnits[i].posY && xPos == meleeUnits[i].posX && yPos == meleeUnits[i].posY)
+                    while (xPos == rangedUnits[i].PosX && yPos == rangedUnits[i].PosY && xPos == meleeUnits[i].PosX && yPos == meleeUnits[i].PosY)
                     {
                         xPos = rd.Next(0, 20);
                         yPos = rd.Next(0, 20);
                     }
 
-                    u.posX = xPos;
-                    u.posY = yPos;
-                    unitMap[u.posY, u.posX] = (Unit)u;
+                    u.PosX = xPos;
+                    u.PosY = yPos;
+                    unitMap[u.PosY, u.PosX] = (Unit)u;
                 }
 
                 units.Add(u);
             }
 
-            foreach (Unit u in meleeUnits)
+            foreach (MeleeUnit u in meleeUnits)
             {
                 for (int i = 0; i < meleeUnits.Count; i++)
                 {
                     int xPos = rd.Next(0, 20);
                     int yPos = rd.Next(0, 20);
 
-                    while (xPos == meleeUnits[i].posX && yPos == meleeUnits[i].posY && xPos == rangedUnits[i].posX && yPos == rangedUnits[i].posY)
+                    while (xPos == meleeUnits[i].PosX && yPos == meleeUnits[i].PosY && xPos == rangedUnits[i].PosX && yPos == rangedUnits[i].PosY)
                     {
                         xPos = rd.Next(0, 20);
                         yPos = rd.Next(0, 20);
                     }
 
-                    u.posX = xPos;
-                    u.posY = yPos;
+                    u.PosX = xPos;
+                    u.PosY = yPos;
                 }
 
-                unitMap[u.posY, u.posX] = (Unit)u;
+                unitMap[u.PosY, u.PosX] = (Unit)u;
                 units.Add(u);
             }
 
@@ -120,17 +120,26 @@ namespace GADE6112_POE
 
             foreach (Unit u in units)
             {
-                unitMap[u.posY, u.posX] = u;
+                if (u is MeleeUnit)
+                {
+                    MeleeUnit M = (MeleeUnit)u;
+                    unitMap[M.PosY, M.PosX] = u;
+                }
+                else if (u is RangedUnit)
+                {
+                    RangedUnit M = (RangedUnit)u;
+                    unitMap[M.PosY, M.PosX] = u;
+                }
             }
 
-            foreach (Unit u in rangedUnits)
+            foreach (RangedUnit u in rangedUnits)
             {
-                map[u.posY, u.posX] = "R";
+                map[u.PosY, u.PosX] = "R";
             }
 
-            foreach (Unit u in meleeUnits)
+            foreach (MeleeUnit u in meleeUnits)
             {
-                map[u.posY, u.posX] = "M";
+                map[u.PosY, u.PosX] = "M";
             }
         }
     }
