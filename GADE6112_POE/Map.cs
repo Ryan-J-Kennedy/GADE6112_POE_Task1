@@ -44,30 +44,20 @@ namespace GADE6112_POE
 
             for (int i = 0; i < unitNum; i++)
             {
-                if (rd.Next(0, 2) == 0)
-                {
-                    RangedUnit archer = new RangedUnit(0, 0, Faction.Dire, 30, 1, 3, 3, "{|", false);
-                    rangedUnits.Add(archer);
-                }
-                else
-                {
-                    MeleeUnit knight = new MeleeUnit(0, 0, Faction.Dire, 40, 1, 5, 1, "/", false);
-                    meleeUnits.Add(knight);
-                }
+                RangedUnit archer = new RangedUnit(0, 0, Faction.Dire, 30, 1, 3, 3, "{|", false);
+                rangedUnits.Add(archer);
+
+                MeleeUnit knight = new MeleeUnit(0, 0, Faction.Dire, 40, 1, 5, 1, "/", false);
+                meleeUnits.Add(knight);
             }
 
             for (int i = 0; i < unitNum; i++)
             {
-                if (rd.Next(0, 2) == 0)
-                {
-                    RangedUnit archer = new RangedUnit(0, 0, Faction.Radient, 30, 1, 3, 3, "{|", false);
-                    rangedUnits.Add(archer);
-                }
-                else
-                {
-                    MeleeUnit knight = new MeleeUnit(0, 0, Faction.Radient, 40, 1, 5, 1, "/", false);
-                    meleeUnits.Add(knight);
-                }
+                RangedUnit archer = new RangedUnit(0, 0, Faction.Radient, 30, 1, 3, 3, "{|", false);
+                rangedUnits.Add(archer);
+
+                MeleeUnit knight = new MeleeUnit(0, 0, Faction.Radient, 40, 1, 5, 1, "/", false);
+                meleeUnits.Add(knight);
             }
 
 
@@ -125,14 +115,6 @@ namespace GADE6112_POE
                 for (int j = 0; j < 20; j++)
                 {
                     map[i, j] = "";
-                }
-            }
-
-            for (int i = 0; i < 20; i++)
-            {
-                for (int j = 0; j < 20; j++)
-                {
-                    unitMap[i, j] = null;
                 }
             }
 
