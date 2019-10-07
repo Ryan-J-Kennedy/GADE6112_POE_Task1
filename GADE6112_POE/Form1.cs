@@ -54,14 +54,16 @@ namespace GADE6112_POE
 
                     if (m.map[x, y] == "R")
                     {
-                        btn.Text = "{|";
-                        btn.Name = m.unitMap[x, y].ToString();
-                        btn.Click += MyButtonClick;
+                        
 
                         if (m.unitMap[x, y] is RangedUnit)
                         {
                             RangedUnit M = (RangedUnit)m.unitMap[x, y];
 
+                            btn.Text = M.Symbol;
+                            btn.Name = M.ToString();
+                            btn.Click += MyButtonClick;
+
                             if (M.FactionType == Faction.Dire)
                             {
                                 btn.BackColor = Color.Red;
@@ -70,18 +72,22 @@ namespace GADE6112_POE
                             {
                                 btn.BackColor = Color.Green;
                             }
+
+                            gbMap.Controls.Add(btn);
                         }
                     }
                     else if (m.map[x, y] == "M")
                     {
-                        btn.Text = "/";
-                        btn.Name = m.unitMap[x, y].ToString();
-                        btn.Click += MyButtonClick;
+                        
 
                         if (m.unitMap[x, y] is MeleeUnit)
                         {
                             MeleeUnit M = (MeleeUnit)m.unitMap[x, y];
 
+                            btn.Text = M.Symbol;
+                            btn.Name = M.ToString();
+                            btn.Click += MyButtonClick;
+
                             if (M.FactionType == Faction.Dire)
                             {
                                 btn.BackColor = Color.Red;
@@ -90,22 +96,10 @@ namespace GADE6112_POE
                             {
                                 btn.BackColor = Color.Green;
                             }
+
+                            gbMap.Controls.Add(btn);
                         }
                     }
-                    else
-                    {
-                        btn.Text = "";
-                    }
-
-                    buttons[x,y] = btn;
-                }
-            }
-
-            for (int x = 0; x < 20; x++)
-            {
-                for (int y = 0; y < 20; y++)
-                {
-                    gbMap.Controls.Add(buttons[x, y]);
                 }
             }
         }
