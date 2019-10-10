@@ -54,8 +54,6 @@ namespace GADE6112_POE
 
                     if (m.map[x, y] == "R")
                     {
-                        
-
                         if (m.unitMap[x, y] is RangedUnit)
                         {
                             RangedUnit M = (RangedUnit)m.unitMap[x, y];
@@ -78,8 +76,6 @@ namespace GADE6112_POE
                     }
                     else if (m.map[x, y] == "M")
                     {
-                        
-
                         if (m.unitMap[x, y] is MeleeUnit)
                         {
                             MeleeUnit M = (MeleeUnit)m.unitMap[x, y];
@@ -172,8 +168,6 @@ namespace GADE6112_POE
                 round++;
                 m.PlaceUnits();
                 Placebuttons();
-
-
             }
             else
             {
@@ -230,8 +224,6 @@ namespace GADE6112_POE
                     }
                 }
             }
-
-
         }
 
         //The on click event of the buttons with the units
